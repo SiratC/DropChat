@@ -1,52 +1,28 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
-const path = require('path'); // Include path module
+const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = require("socket.io")(server);
 
-// Serve static files from the 'public' directory
-const publicPath = path.join(__dirname, 'public');
-app.use(express.static(publicPath));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Store connected users
-let users = [];
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
-io.on('connection', (socket) => {
-    console.log('A user connected');
-
-    // Handle new user connection
-    socket.on('join', (username) => {
-        const user = {
-            id: socket.id,
-            username: username
-        };
-        users.push(user);
-        io.emit('user-connected', username);
+io.on("connection", function(socket){
+    socket.on("newuser", function(username){
+        socket.broadcast.emit("update", username + " has entered the chat.");
     });
-
-    // Handle chat messages
-    socket.on('message', (msg) => {
-        io.emit('message', { username: findUsername(socket.id), message: msg });
+    socket.on("exituser", function(username){  
+        socket.broadcast.emit("update", username + " has left the chat.");
     });
-
-    // Handle disconnection
-    socket.on('disconnect', () => {
-        const username = findUsername(socket.id);
-        if (username) {
-            users = users.filter(user => user.id !== socket.id);
-            io.emit('user-disconnected', username);
-            console.log(`${username} disconnected`);
-        }
+    socket.on("chat", function(message){
+        socket.broadcast.emit("chat", message);
     });
-
-    // Function to find username by socket id
-    function findUsername(socketId) {
-        const user = users.find(user => user.id === socketId);
-        return user ? user.username : null;
-    }
 });
 
 const PORT = process.env.PORT || 3000;
