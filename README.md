@@ -15,4 +15,8 @@ DropChat is a web application that helps users drop in and chat anytime from any
 ## Installation
 
 ### Prerequisites
-- Node.js and npm 
+- Ensure Node.js and npm are installed on your system. 
+- Download all the files given.
+- Open your terminal/command prompt and run the following command 'npm start'
+- The server will start and will provide you a port number that will go in http://localhost:<port-number>. Replace <port-number> with the actual port number displayed in your terminal.
+
