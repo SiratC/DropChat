@@ -1,6 +1,6 @@
 (function(){
     const app = document.querySelector(".app");
-    const socket = io();
+    const socket = io("https://dropchat-s42h.onrender.com");
 
     let uname;
 
@@ -104,3 +104,4 @@
         document.body.classList.toggle('dark-mode');
     });
 })();
+
