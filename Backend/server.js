@@ -5,11 +5,11 @@ const cors = require('cors'); // Allow frontend requests
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server, {
-    cors: {
-        origin: "*", // Allow all frontend connections
-        methods: ["GET", "POST"]
-    }
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "https://drop-chat-sirat-chowdhurys-projects.vercel.app",
+    methods: ["GET", "POST"]
+  }
 });
 
 // WebSocket Events
