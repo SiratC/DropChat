@@ -7,7 +7,7 @@ const app = express();
 const server = http.createServer(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://drop-chat-sirat-chowdhurys-projects.vercel.app",
+    origin: ["https://drop-chat.vercel.app", "https://drop-chat-sirat-chowdhurys-projects.vercel.app"], 
     methods: ["GET", "POST"]
   }
 });
